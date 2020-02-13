@@ -22,8 +22,16 @@ type RedisCeleryBroker struct {
 func NewRedisBroker(conn *redis.Pool) *RedisCeleryBroker {
 	return &RedisCeleryBroker{
 		Pool:      conn,
-		queueName: "celery",
+		queueName: defaultQueue,
 	}
+}
+
+func NewRedisBrokerWithConfig(conn *redis.Pool, conf *BrokerConfig) *RedisCeleryBroker {
+	broker := NewRedisBroker(conn)
+	if conf.Queue != "" {
+		broker.queueName = conf.Queue
+	}
+	return broker
 }
 
 // NewRedisCeleryBroker creates new RedisCeleryBroker based on given uri
