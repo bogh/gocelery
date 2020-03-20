@@ -212,6 +212,10 @@ func getReflectionResultMessage(val *reflect.Value) *ResultMessage {
 }
 
 func releaseResultMessage(v *ResultMessage) {
+	if v == nil {
+		log.Println("WARNING: trying to release `nil` message")
+		return
+	}
 	v.reset()
 	resultMessagePool.Put(v)
 }
